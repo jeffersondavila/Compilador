@@ -30,7 +30,7 @@ async function obtenerLista() {
 
 /* Función asincrónica que analiza la lista de líneas de código
 para encontrar patrones específicos*/
-async function obtenerListaConErrores() {
+async function obtenerListaToken() {
     // Obtener la lista de líneas de código
     const lista = await obtenerLista();
     const lineaCodigo = [], lineaErrores = [];
@@ -59,8 +59,8 @@ async function obtenerListaConErrores() {
     return { lineaCodigo, lista, lineaErrores };
 }
 
-obtenerListaConErrores().then((resultado) => {
+obtenerListaToken().then((resultado) => {
     // console.log(resultado.lista);
     // console.log(resultado.lineaErrores);
-    // console.log(resultado.lineaCodigo);
+    console.log(resultado.lineaCodigo);
 });
