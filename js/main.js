@@ -60,6 +60,7 @@ obtenerListaToken().then((resultado) => {
         for (let j = 0; j < resultado.lexemas[i].length; j++) {
             let token = (resultado.lexemas[i][j]).trim();
             let validaToken = operadores.variables.test(token);
+            // let validaToken = operadores.opAritmeticos.test(token);
 
             if (validaToken) {
                 console.log(token);

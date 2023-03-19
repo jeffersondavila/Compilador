@@ -1,4 +1,4 @@
-const opAritmeticos = ['=', '+', '<', '>', '-', '*', '/'];
+const opAritmeticos = /^(:=|[+\-*/])$/;
 
 const identificadores = /^[A-Za-z]+[\_]?[A-Za-z]*[\/d]$/i;
 
