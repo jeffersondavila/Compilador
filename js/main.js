@@ -55,5 +55,15 @@ async function obtenerListaToken() {
 }
 
 obtenerListaToken().then((resultado) => {
-    console.log(resultado.lexemas);
+    for (let i = 0; i < resultado.lexemas.length; i++) {
+        // console.log(resultado.lexemas[i]);
+        for (let j = 0; j < resultado.lexemas[i].length; j++) {
+            let token = (resultado.lexemas[i][j]).trim();
+            let validaToken = operadores.variables.test(token);
+
+            if (validaToken) {
+                console.log(token);
+            }
+        }
+    }
 });

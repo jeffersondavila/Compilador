@@ -1,8 +1,8 @@
 const opAritmeticos = ['=', '+', '<', '>', '-', '*', '/'];
 
-const identificadores = /^[A-Za-z]+[\_]?[A-Za-z]*[\/d]$/gi;
+const identificadores = /^[A-Za-z]+[\_]?[A-Za-z]*[\/d]$/i;
 
-const variables = /^(?=.*\b(Dim|Integer|Decimal|String|As)\b).*$/gi;
+const variables = /^(?=.*\b(Main()|Dim|Integer|Decimal|String|As|Variable|COMO|ENTERO)\b).*$/i
 
 const caracteres = ['a', 'A', 'b', 'B', 'c', 'C', 'd', 'D', 'e', 'E', 'f', 'F', 'g', 'G', 'h', 'H',
     'i', 'I', 'j', 'J', 'k', 'K', 'l', 'L', 'm', 'M', 'n', 'N', 'ñ', 'Ñ', 'o', 'O', 'p', 'P', 'q',
