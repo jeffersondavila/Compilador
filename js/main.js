@@ -1,4 +1,4 @@
-const variables = /^(?=.*\b(Dim|Integer|Decimal|String|As)\b).*$/gi;
+import { operadores } from "./operadores.js";
 
 /* Función asincrónica que leerá un archivo de texto y
 devolverá una lista de líneas de código*/
@@ -20,7 +20,7 @@ async function obtenerLista() {
             }
         };
         // abrir una conexión con el archivo de texto
-        xhttp.open("GET", "./prueba.txt", true);
+        xhttp.open("GET", "./js/prueba.txt", true);
         // enviar la solicitud y leer el contenido del archivo
         xhttp.send();
     });
