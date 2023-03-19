@@ -59,12 +59,10 @@ obtenerListaToken().then((resultado) => {
         // console.log(resultado.lexemas[i]);
         for (let j = 0; j < resultado.lexemas[i].length; j++) {
             let token = (resultado.lexemas[i][j]).trim();
-            let validaToken = operadores.variables.test(token);
-            // let validaToken = operadores.opAritmeticos.test(token);
-
-            if (validaToken) {
-                console.log(token);
-            }
+            let validaVariable = operadores.variables.test(token);
+            let validaOperador = operadores.opAritmeticos.test(token);
+            let validaIdentificador = operadores.identificadores.test(token);
+            console.log(token);
         }
     }
 });
