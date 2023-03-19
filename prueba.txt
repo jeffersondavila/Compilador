@@ -1,6 +1,6 @@
 Main()
 {
-	Dim Var1 As Integer;
+	Variable Var1 COMO ENTERO;
 	Dim var2 As Decimal;
 	Dim var3 As String;
 	Dim var4 As String;

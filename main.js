@@ -16,11 +16,9 @@ async function obtenerLista() {
                 for (let i = 0; i < lineas.length; i++) {
                     lista.push(lineas[i]);
                 }
-
                 resolve(lista);
             }
         };
-
         // abrir una conexión con el archivo de texto
         xhttp.open("GET", "./prueba.txt", true);
         // enviar la solicitud y leer el contenido del archivo
@@ -32,35 +30,30 @@ async function obtenerLista() {
 para encontrar patrones específicos*/
 async function obtenerListaToken() {
     // Obtener la lista de líneas de código
-    const lista = await obtenerLista();
-    const lineaCodigo = [], lineaErrores = [];
-
+    const lexemas = [];
+    let lastIndex, lastToken;
+    const codigoFuente = await obtenerLista();
     // Analizar cada línea de código
-    for (let i = 0; i < lista.length; i++) {
+    for (let i = 0; i < codigoFuente.length; i++) {
         let tokens = [];
-        const element = lista[i];
+        const element = codigoFuente[i];
 
         tokens = element.trim().split(" ");
-        let lastIndex = tokens.length - 1;
-        let lastToken = tokens[lastIndex];
+        lastIndex = tokens.length - 1;
+        lastToken = tokens[lastIndex];
         const hasPuntoComa = lastToken.endsWith(";");
-
         // Si el último token contiene un ; se separa en otro token
         if (hasPuntoComa) {
-            const parts = lastToken.split(";");
+            const tokenPuntoComa = lastToken.split(";");
             // Se agregar manualmente el punto y coma a la segunda parte
-            parts[1] = ";" + parts[1];
-            tokens.splice(lastIndex, 1, parts[0], parts[1]);
+            tokenPuntoComa[1] = ";" + tokenPuntoComa[1];
+            tokens.splice(lastIndex, 1, tokenPuntoComa[0], tokenPuntoComa[1]);
         }
-
-        lineaCodigo.push(tokens);
+        lexemas.push(tokens);
     }
-
-    return { lineaCodigo, lista, lineaErrores };
+    return { lexemas };
 }
 
 obtenerListaToken().then((resultado) => {
-    // console.log(resultado.lista);
-    // console.log(resultado.lineaErrores);
-    console.log(resultado.lineaCodigo);
+    console.log(resultado.lexemas);
 });
