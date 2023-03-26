@@ -55,14 +55,22 @@ async function obtenerListaToken() {
 }
 
 obtenerListaToken().then((resultado) => {
-    for (let i = 0; i < resultado.lexemas.length; i++) {
-        // console.log(resultado.lexemas[i]);
-        for (let j = 0; j < resultado.lexemas[i].length; j++) {
-            let token = (resultado.lexemas[i][j]).trim();
-            let validaVariable = operadores.variables.test(token);
-            let validaOperador = operadores.opAritmeticos.test(token);
+    resultado.lexemas.map((linea, i) => {
+        let fila = i + 1;
+        linea.map((token, j) => {
+            token = token.trim();
+            let validaPalabraReservada = operadores.variables.test(token);
+            if (validaPalabraReservada) {
+                return;
+            }
             let validaIdentificador = operadores.identificadores.test(token);
-            console.log(token);
-        }
-    }
+            if (validaIdentificador) {
+                return;
+            }
+            let validaOperador = operadores.opAritmeticos.test(token);
+            if (!validaOperador) {
+                console.log(`Error en fila ${fila} columna ${(j + 1)}: ${token} no es una palabra reservada, identificador o operador válido.`);
+            }
+        });
+    });
 });
