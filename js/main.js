@@ -1,10 +1,8 @@
 import { operadores } from "./operadores.js";
 
-// Selección del botón por clase
 const botonCargarArchivo = document.querySelector('.btn.btn-outline-secondary.mt-3.ms-2');
-
-// Obtener referencia al elemento textarea
 const textarea = document.getElementById('floatingTextarea1');
+const textareaError = document.getElementById('floatingTextarea2');
 
 /* Función asincrónica que leerá un archivo de texto y
 devolverá una lista de líneas de código*/
@@ -84,7 +82,8 @@ obtenerListaToken().then((resultado) => {
             }
             let validaOperador = operadores.opAritmeticos.test(token);
             if (!validaOperador) {
-                console.log(`Error en fila ${fila} columna ${(j + 1)}: ${token} no es una palabra reservada, identificador o operador válido.`);
+                let mensajeError = `Error en fila ${fila} columna ${(j + 1)}: ${token} no es una palabra reservada, identificador o operador válido.`;
+                textareaError.value = mensajeError;
             }
         });
     });
