@@ -2,6 +2,7 @@ body {
     font-family: 'Mulish', sans-serif;
     font-family: 'Nunito', sans-serif;
 }
-.IngresaCodigo {
-    height: 100px;
+.IngresaCodigo > textarea {
+    margin: 10px;
+    padding: 1000px;
 }
