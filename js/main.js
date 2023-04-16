@@ -1,5 +1,11 @@
 import { operadores } from "./operadores.js";
 
+// Selección del botón por clase
+const botonCargarArchivo = document.querySelector('.btn.btn-outline-secondary.mt-3.ms-2');
+
+// Obtener referencia al elemento textarea
+const textarea = document.getElementById('floatingTextarea1');
+
 /* Función asincrónica que leerá un archivo de texto y
 devolverá una lista de líneas de código*/
 async function obtenerLista() {
@@ -25,6 +31,15 @@ async function obtenerLista() {
         xhttp.send();
     });
 }
+
+// Detectar evento de clic
+botonCargarArchivo.addEventListener('click', async function () {
+    // Obtener la lista de la función obtenerLista()
+    const lista = await obtenerLista();
+
+    // Actualizar el valor del elemento textarea con la lista
+    textarea.value = lista.join('\n');
+});
 
 /* Función asincrónica que analiza la lista de líneas de código
 para encontrar patrones específicos*/
