@@ -3,6 +3,15 @@ body {
     font-family: 'Nunito', sans-serif;
 }
 .IngresaCodigo > textarea {
-    margin: 10px;
-    padding: 1000px;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    height: 50vh !important;
+}
+.IngresaCodigo > div {
+    margin-bottom: 1rem;
+}
+.IngresoError > textarea {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    height: 15vh !important;
 }
