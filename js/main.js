@@ -5,6 +5,30 @@ const textarea = document.getElementById('floatingTextarea1');
 const textareaError = document.getElementById('floatingTextarea2');
 const botonCargarArchivo = document.getElementById('botonCargaCodigo');
 
+function consultaArchivo(nombreArchivo) {
+    return new Promise((resolve, reject) => {
+        const xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                const lista = [];
+                const codigo = this.responseText;
+                // se divide cada salto de linea
+                const lineas = codigo.split('\n');
+
+                for (let i = 0; i < lineas.length; i++) {
+                    lista.push(lineas[i]);
+                }
+                resolve(lista);
+            }
+        };
+        // abrir una conexión con el archivo de texto
+        xhttp.open("GET", `./js/${nombreArchivo}`, true);
+        // enviar la solicitud y leer el contenido del archivo
+        xhttp.send();
+    });
+}
+
 // Detectar evento de clic
 botonCargarArchivo.addEventListener('click', function () {
     inputFile.type = 'file';
@@ -21,29 +45,15 @@ async function obtenerLista() {
             if (!archivoSeleccionado || archivoSeleccionado.type !== 'text/plain') {
                 alert('Por favor, seleccione un archivo de texto (.txt)');
                 reject();
-            }
-
-            const nombreArchivo = archivoSeleccionado.name;
-
-            const xhttp = new XMLHttpRequest();
-
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    const lista = [];
-                    const codigo = this.responseText;
-                    // se divide cada salto de linea
-                    const lineas = codigo.split('\n');
-
-                    for (let i = 0; i < lineas.length; i++) {
-                        lista.push(lineas[i]);
-                    }
+            } else {
+                consultaArchivo(archivoSeleccionado.name).then((lista) => {
                     resolve(lista);
-                }
-            };
-            // abrir una conexión con el archivo de texto
-            xhttp.open("GET", `./js/${nombreArchivo}`, true);
-            // enviar la solicitud y leer el contenido del archivo
-            xhttp.send();
+                    console.log(lista);
+                }).catch((error) => {
+                    console.log(error);
+                    reject();
+                });
+            }
         });
     });
 }
