@@ -37,20 +37,24 @@ botonCargarArchivo.addEventListener('click', function () {
 });
 
 /* Función asincrónica que leerá un archivo de texto y devolverá una lista de líneas de código*/
-async function obtenerContenidoArchivo() {
+async function obtenerLista() {
     return new Promise((resolve, reject) => {
-        try {
+        inputFile.addEventListener('change', () => {
             const archivoSeleccionado = inputFile.files[0];
 
             if (!archivoSeleccionado || archivoSeleccionado.type !== 'text/plain') {
-                reject(new Error('Por favor, seleccione un archivo de texto (.txt)'));
+                alert('Por favor, seleccione un archivo de texto (.txt)');
+                reject();
             } else {
-                const urlArchivo = URL.createObjectURL(archivoSeleccionado);
-                resolve(urlArchivo);
+                consultaArchivo(archivoSeleccionado.name).then((lista) => {
+                    resolve(lista);
+                    console.log(lista);
+                }).catch((error) => {
+                    console.log(error);
+                    reject();
+                });
             }
-        } catch (error) {
-            reject(error);
-        }
+        });
     });
 }
 
