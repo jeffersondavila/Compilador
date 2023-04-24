@@ -29,7 +29,6 @@
     <textarea class="form-control " placeholder="Ingresa tu codigo" id="floatingTextarea1"></textarea>
     <label for="floatingTextarea2 me-2">Ingresa tu codigo</label>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end me-2">
-      <!-- <button class="btn btn-outline-secondary mt-3 ms-2">Cargar Archivo </button> -->
       <button id="botonCargaCodigo" class="btn btn-outline-secondary mt-3 ms-2">Cargar Archivo</button>
       <input type="file" id="archivo" style="display:none;">
     </div>
@@ -38,11 +37,12 @@
   <div class="form-floating mt-2 container IngresoError">
     <textarea class="form-control" id="floatingTextarea2"></textarea>
     <div class="  d-md-flex justify-content-md-end me-2">
-      <button class="btn btn-outline-primary mt-3 ms-5 ">Análisis Lexico </button>
-      <button class="btn btn-outline-success mt-3 ms-2 ">Análisis Sintáctico </button>
+      <button id="botonAnalisisLexico" class="btn btn-outline-primary mt-3 ms-5 ">Análisis Lexico</button>
+      <button id="botonAnalisisSintactico" class="btn btn-outline-success mt-3 ms-2 ">Análisis Sintáctico </button>
     </div>
   </div>
 
+  <script src="./js/CapturaCodigo.js"></script>
   <script src="./js/main.js" type="module"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
