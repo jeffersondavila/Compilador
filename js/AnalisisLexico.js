@@ -7,7 +7,8 @@ const botonAnalisisLexico = document.getElementById('botonAnalisisLexico');
 botonAnalisisLexico.addEventListener('click', function () {
     const codigoFuente = textareaCodigo.value.trim();
     const filasCodigo = codigoFuente.split('\n');
-    const palabrasPorLinea = filasCodigo.map(linea => linea.split(' '));
+    // const palabrasPorLinea = filasCodigo.map(linea => linea.split(' '));
+    const palabrasPorLinea = filasCodigo.map(linea => linea.replace(/\t+/g, '').split(' '));
 
     if (codigoFuente.length === 0) {
         codigoFuente = '';
@@ -16,6 +17,6 @@ botonAnalisisLexico.addEventListener('click', function () {
         return;
     }
 
-    console.log(filasCodigo);
+    // console.log(filasCodigo);
     console.log(palabrasPorLinea);
 });
