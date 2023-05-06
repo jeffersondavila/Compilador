@@ -21,13 +21,14 @@ botonAnalisisLexico.addEventListener('click', function () {
     for (let arregloInterior of palabrasPorLinea) {
         let longitud = arregloInterior.length;
         for (let elemento of arregloInterior) {
+            let declaraInstruccion;
             // Valida el primer indice, para determinar que tipo de operacion es y si cumple con el formato
             if (indice === 0) {
                 let longitudElemento = elemento.length;
                 let subcadena = elemento.substring(0, 4);
-                let declaraInstruccion = elemento.substring(4, longitudElemento);
+                declaraInstruccion = elemento.substring(4, longitudElemento);
                 if (subcadena !== "<QC-") {
-                    listaErrores.push(`Para declarar una instrucción se debe inicializar con <QC- | Error en la fila ${fila}`);
+                    listaErrores.push(`Para declarar una instrucción se debe inicializar con <QC- | Error en la fila ${fila}\n`);
                     fila += 1;
                     textareaError.value = listaErrores;
                 }
@@ -42,7 +43,7 @@ botonAnalisisLexico.addEventListener('click', function () {
                 let longitudElemento = elemento.length;
                 let subcadena = elemento.substring(longitudElemento - 1, longitudElemento);
                 if (subcadena !== ">") {
-                    listaErrores.push(`Para finalizar una instrucción se debe agregar la terminación > | Error en la fila ${fila}`);
+                    listaErrores.push(`Para finalizar una instrucción se debe agregar la terminación > | Error en la fila ${fila}\n`);
                     fila += 1;
                     textareaError.value = listaErrores;
                 }
