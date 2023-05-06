@@ -1,18 +1,1 @@
-Main()
-{
-	Variable Var1 COMO ENTERO;
-	Dim var2 As Decimal;
-	Dim var3 As String;
-	Dim var4 As String;
-
-	/*Inicia comentario*/
-
-	Var1 := 125;
-	var2 := 85.32;
-	var3 := "Hola mundo";
-
-	If Var1 > 25 Then
-
-		Var1 := Var1 + 25;
-		var2 := var2 * 7;
-}
+<QC-Declaraciones: QUETZAL edad>

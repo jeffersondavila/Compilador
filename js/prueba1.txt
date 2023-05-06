@@ -1,1 +1,2 @@
-hola
+<QC-salida: edad>
+<QC-salida: "Esto es una cadena a imprimir">
