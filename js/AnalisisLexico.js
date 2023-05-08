@@ -5,6 +5,7 @@ const textareaError = document.getElementById('floatingTextarea2');
 const botonAnalisisLexico = document.getElementById('botonAnalisisLexico');
 
 botonAnalisisLexico.addEventListener('click', function () {
+    console.clear();
     let indice = 0, fila = 1;
     let listaErrores = [];
     const codigoFuente = textareaCodigo.value.trim();
@@ -24,20 +25,42 @@ botonAnalisisLexico.addEventListener('click', function () {
             let declaraInstruccion;
             // Valida el primer indice, para determinar que tipo de operacion es y si cumple con el formato
             if (indice === 0) {
+                let validaErrorInicio = false;
                 let longitudElemento = elemento.length;
-                let subcadena = elemento.substring(0, 4);
-                declaraInstruccion = elemento.substring(4, longitudElemento);
+
+                // Obtiene la posición cuando detecta el signo -
+                let posicionGuion = elemento.indexOf("-") + 1;
+
+                // Obtiene la instrucción principal que se utiliza para inicializar algo en el lenguaje <QC-
+                let subcadena = elemento.substring(0, posicionGuion);
+
+                // Obtiene la posición cuando detecta el signo :
+                let posicionDoblePunto = elemento.indexOf(":");
+
+                // Obtiene la instrucción que se esta inicializando
+                declaraInstruccion = elemento.substring(posicionGuion, posicionDoblePunto);
+
+                // Obtiene el : cuando se declara una instrucción
+                let finDeclaracion = elemento.substring(longitudElemento - 1, longitudElemento);
+
+                // Valida que el toquen sea una palabra reservada
+                let validaToken = operadores.palabrasReservadas.test(declaraInstruccion);
+
                 if (subcadena !== "<QC-") {
                     listaErrores.push(`Para declarar una instrucción se debe inicializar con <QC- | Error en la fila ${fila}\n`);
                     fila += 1;
-                    textareaError.value = listaErrores;
+                    // textareaError.value = listaErrores;
+                    validaErrorInicio = true;
                 }
-                if (declaraInstruccion === "Declaraciones") {
-                } else if (declaraInstruccion === "salida") {
+
+                if (validaToken === false) {
+                    listaErrores.push(`La palabra reservada ${declaraInstruccion} no se encuentra correctamente escrita | Error en la fila ${fila}\n`);
+                    // textareaError.value = listaErrores;
+                    if (validaErrorInicio === false) {
+                        fila += 1;
+                    }
                 }
-                console.log(elemento);
             } else if (indice > 0 && indice !== longitud - 1) {
-                console.log(elemento);
             } else {
                 // Valida el último indice, para determinar que se haya finalizado correctamente la instrucción
                 let longitudElemento = elemento.length;
@@ -53,4 +76,5 @@ botonAnalisisLexico.addEventListener('click', function () {
         indice = 0; // Reiniciar el índice para el próximo arreglo interno
     }
 
+    textareaError.value = listaErrores;
 });
