@@ -25,7 +25,6 @@ botonAnalisisLexico.addEventListener('click', function () {
             let declaraInstruccion;
             // Valida el primer indice, para determinar que tipo de operacion es y si cumple con el formato
             if (indice === 0) {
-                let validaErrorInicio = false;
                 let longitudElemento = elemento.length;
 
                 // Obtiene la posición cuando detecta el signo -
@@ -48,17 +47,10 @@ botonAnalisisLexico.addEventListener('click', function () {
 
                 if (subcadena !== "<QC-") {
                     listaErrores.push(`Para declarar una instrucción se debe inicializar con <QC- | Error en la fila ${fila}\n`);
-                    fila += 1;
-                    // textareaError.value = listaErrores;
-                    validaErrorInicio = true;
                 }
 
                 if (validaToken === false) {
                     listaErrores.push(`La palabra reservada ${declaraInstruccion} no se encuentra correctamente escrita | Error en la fila ${fila}\n`);
-                    // textareaError.value = listaErrores;
-                    if (validaErrorInicio === false) {
-                        fila += 1;
-                    }
                 }
             } else if (indice > 0 && indice !== longitud - 1) {
             } else {
@@ -73,7 +65,13 @@ botonAnalisisLexico.addEventListener('click', function () {
             }
             indice++;
         }
-        indice = 0; // Reiniciar el índice para el próximo arreglo interno
+        // Reiniciar el índice para el próximo arreglo interno
+        indice = 0;
+
+        // Si contiene errores, suma la fila para registrar las filas donde se detectan los errores
+        if (listaErrores.length > 0) {
+            fila += 1;
+        }
     }
 
     textareaError.value = listaErrores;
