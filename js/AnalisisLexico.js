@@ -46,25 +46,40 @@ botonAnalisisLexico.addEventListener('click', function () {
                 let validaToken = operadores.palabrasReservadas.test(declaraInstruccion);
 
                 if (subcadena !== "<QC-") {
-                    listaErrores.push(`Error en la fila ${fila} | Para declarar una instrucción se debe inicializar con <QC-\n`);
+                    listaErrores.push(`Error en la fila ${fila} | Para declarar una instrucción se debe inicializar con "<QC-"\n`);
                 }
 
                 if (validaToken === false) {
-                    listaErrores.push(`Error en la fila ${fila} | La palabra reservada después de la instrucción <QC- no se encuentra correctamente escrita\n`);
+                    listaErrores.push(`Error en la fila ${fila} | La palabra reservada después de la instrucción "<QC-" no es valida\n`);
                 }
 
                 if (finDeclaracion !== ":") {
-                    listaErrores.push(`Error en la fila ${fila} | Después de declarar una instrucción, debe finalizar con :\n`);
+                    listaErrores.push(`Error en la fila ${fila} | Después de declarar una instrucción, debe finalizar con ":"\n`);
                 }
             } else if (indice > 0 && indice !== longitud - 1) {
+                let validaToken = operadores.palabrasReservadas.test(elemento);
+
+                if (validaToken === false) {
+                    listaErrores.push(`Error en la fila ${fila} | La palabra reservada "${elemento}" no es valida\n`);
+                }
             } else {
                 // Valida el último indice, para determinar que se haya finalizado correctamente la instrucción
-                let longitudElemento = elemento.length;
-                let subcadena = elemento.substring(longitudElemento - 1, longitudElemento);
-                if (subcadena !== ">") {
-                    listaErrores.push(`Para finalizar una instrucción se debe agregar la terminación > | Error en la fila ${fila}\n`);
-                    fila += 1;
-                    textareaError.value = listaErrores;
+                let indiceCierre = elemento.length;
+                let cadenaIdentificador = elemento.substring(0, indiceCierre);
+                let instruccionCierre = elemento.substring(indiceCierre - 1, indiceCierre);
+
+                if (cadenaIdentificador.endsWith(">")) {
+                    cadenaIdentificador = cadenaIdentificador.replace(/>$/, "");
+                }
+
+                let validaToken = operadores.identificadores.test(cadenaIdentificador);
+
+                if (instruccionCierre !== ">") {
+                    listaErrores.push(`Error en la fila ${fila} | Para finalizar una instrucción se debe agregar la terminación ">"\n`);
+                }
+
+                if (validaToken === false) {
+                    listaErrores.push(`Error en la fila ${fila} | El identificador "${cadenaIdentificador}" no es valido\n`);
                 }
             }
             indice++;
