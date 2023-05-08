@@ -46,11 +46,15 @@ botonAnalisisLexico.addEventListener('click', function () {
                 let validaToken = operadores.palabrasReservadas.test(declaraInstruccion);
 
                 if (subcadena !== "<QC-") {
-                    listaErrores.push(`Para declarar una instrucción se debe inicializar con <QC- | Error en la fila ${fila}\n`);
+                    listaErrores.push(`Error en la fila ${fila} | Para declarar una instrucción se debe inicializar con <QC-\n`);
                 }
 
                 if (validaToken === false) {
-                    listaErrores.push(`La palabra reservada ${declaraInstruccion} no se encuentra correctamente escrita | Error en la fila ${fila}\n`);
+                    listaErrores.push(`Error en la fila ${fila} | La palabra reservada después de la instrucción <QC- no se encuentra correctamente escrita\n`);
+                }
+
+                if (finDeclaracion !== ":") {
+                    listaErrores.push(`Error en la fila ${fila} | Después de declarar una instrucción, debe finalizar con :\n`);
                 }
             } else if (indice > 0 && indice !== longitud - 1) {
             } else {
