@@ -1,4 +1,5 @@
-const identificadores = /^[A-Za-z]+[\_]?[A-Za-z]*[\/d]$/i;
+// const identificadores = /^[A-Za-z]+[\_]?[A-Za-z]*[\/d]$/i;
+const identificadores = /^([A-Za-z]+|^[A-Za-z]$)[\_]?[A-Za-z\d]*$/i;
 
 const operadoresComparacion = /^(?=.*\b(Qmas|Qopc|Q<|Q>|Q#<|Q#>|Q+)\b).*$/i
 

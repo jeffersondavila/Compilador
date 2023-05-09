@@ -10,7 +10,39 @@ botonAnalisisLexico.addEventListener('click', function () {
     let listaErrores = [];
     const codigoFuente = textareaCodigo.value.trim();
     const filasCodigo = codigoFuente.split('\n');
-    const palabrasPorLinea = filasCodigo.map(linea => linea.replace(/\t+/g, '').split(' '));
+    // const palabrasPorLinea = filasCodigo.map(linea => linea.replace(/\t+/g, '').split(' '));
+
+    const palabrasPorLinea = filasCodigo.map(linea => {
+        const lineaSinTab = linea.replace(/\t+/g, ''); // Eliminar tabulaciones
+        const palabras = [];
+        let palabraActual = '';
+        let dentroDeComillas = false;
+
+        for (let i = 0; i < lineaSinTab.length; i++) {
+            const char = lineaSinTab.charAt(i);
+            if (char === ' ' && !dentroDeComillas) {
+                // Separar la palabra actual si no estamos dentro de comillas
+                if (palabraActual !== '') {
+                    palabras.push(palabraActual);
+                    palabraActual = '';
+                }
+            } else if (char === '"') {
+                // Cambiar el estado de dentroDeComillas al encontrar una comilla
+                dentroDeComillas = !dentroDeComillas;
+                palabraActual += char;
+            } else {
+                palabraActual += char;
+            }
+        }
+
+        // Añadir la última palabra si no está vacía
+        if (palabraActual !== '') {
+            palabras.push(palabraActual);
+        }
+
+        return palabras;
+    });
+
 
     if (codigoFuente.length === 0) {
         codigoFuente = '';
@@ -20,9 +52,14 @@ botonAnalisisLexico.addEventListener('click', function () {
     }
 
     for (let arregloInterior of palabrasPorLinea) {
+        let declaraInstruccion;
         let longitud = arregloInterior.length;
         for (let elemento of arregloInterior) {
-            let declaraInstruccion;
+
+            if (elemento === "") {
+                continue
+            }
+
             // Valida el primer indice, para determinar que tipo de operacion es y si cumple con el formato
             if (indice === 0) {
                 let longitudElemento = elemento.length;
@@ -37,13 +74,13 @@ botonAnalisisLexico.addEventListener('click', function () {
                 let posicionDoblePunto = elemento.indexOf(":");
 
                 // Obtiene la instrucción que se esta inicializando
-                declaraInstruccion = elemento.substring(posicionGuion, posicionDoblePunto);
+                let instruccion = elemento.substring(posicionGuion, posicionDoblePunto);
 
                 // Obtiene el : cuando se declara una instrucción
                 let finDeclaracion = elemento.substring(longitudElemento - 1, longitudElemento);
 
                 // Valida que el toquen sea una palabra reservada
-                let validaToken = operadores.palabrasReservadas.test(declaraInstruccion);
+                let validaToken = operadores.palabrasReservadas.test(instruccion);
 
                 if (subcadena !== "<QC-") {
                     listaErrores.push(`Error en la fila ${fila} | Para declarar una instrucción se debe inicializar con "<QC-"\n`);
@@ -51,6 +88,8 @@ botonAnalisisLexico.addEventListener('click', function () {
 
                 if (validaToken === false) {
                     listaErrores.push(`Error en la fila ${fila} | La palabra reservada después de la instrucción "<QC-" no es valida\n`);
+                } else {
+                    declaraInstruccion = instruccion;
                 }
 
                 if (finDeclaracion !== ":") {
@@ -72,7 +111,13 @@ botonAnalisisLexico.addEventListener('click', function () {
                     cadenaIdentificador = cadenaIdentificador.replace(/>$/, "");
                 }
 
-                let validaToken = operadores.identificadores.test(cadenaIdentificador);
+                let validaToken;
+
+                if (declaraInstruccion === "Declaraciones") {
+                    validaToken = operadores.identificadores.test(cadenaIdentificador);
+                } else if (declaraInstruccion === "salida") {
+                    validaToken = operadores.identificadores.test(cadenaIdentificador);
+                }
 
                 if (instruccionCierre !== ">") {
                     listaErrores.push(`Error en la fila ${fila} | Para finalizar una instrucción se debe agregar la terminación ">"\n`);
@@ -85,12 +130,9 @@ botonAnalisisLexico.addEventListener('click', function () {
             indice++;
         }
         // Reiniciar el índice para el próximo arreglo interno
+        fila += 1;
         indice = 0;
-
-        // Si contiene errores, suma la fila para registrar las filas donde se detectan los errores
-        if (listaErrores.length > 0) {
-            fila += 1;
-        }
+        declaraInstruccion = "";
     }
 
     textareaError.value = listaErrores;
