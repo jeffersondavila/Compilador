@@ -52,7 +52,7 @@ botonAnalisisLexico.addEventListener('click', function () {
     }
 
     for (let arregloInterior of palabrasPorLinea) {
-        let declaraInstruccion;
+        let declaraInstruccion, estado = 0;
         let longitud = arregloInterior.length;
         for (let elemento of arregloInterior) {
 
@@ -96,13 +96,28 @@ botonAnalisisLexico.addEventListener('click', function () {
                     listaErrores.push(`Error en la fila ${fila} | Después de declarar una instrucción, debe finalizar con ":"\n`);
                 }
             } else if (indice > 0 && indice !== longitud - 1) {
-                let validaToken = operadores.palabrasReservadas.test(elemento);
+                estado += 1;
+                let validaToken;
 
-                if (validaToken === false) {
-                    listaErrores.push(`Error en la fila ${fila} | La palabra reservada "${elemento}" no es valida\n`);
+                if (estado === 1) { // Variable
+                    validaToken = operadores.palabrasReservadas.test(elemento);
+                } else if (estado === 2) { // Identificadores
+                    validaToken = operadores.identificadores.test(elemento);
+                } else if (estado === 3) { // Asignación
+                    validaToken = operadores.operadoresAritmeticos.test(elemento);
                 }
+
+                if (validaToken === false && estado === 1) {
+                    listaErrores.push(`Error en la fila ${fila} | La palabra reservada "${elemento}" no es valida\n`);
+                } else if (validaToken === false && estado === 2) {
+                    listaErrores.push(`Error en la fila ${fila} | El identificador "${elemento}" no es valido\n`);
+                } else if (validaToken === false && estado === 3) {
+                    listaErrores.push(`Error en la fila ${fila} | El operador "${elemento}" no es valido\n`);
+                }
+
             } else {
                 // Valida el último indice, para determinar que se haya finalizado correctamente la instrucción
+                let validaToken, validaString;
                 let indiceCierre = elemento.length;
                 let cadenaIdentificador = elemento.substring(0, indiceCierre);
                 let instruccionCierre = elemento.substring(indiceCierre - 1, indiceCierre);
@@ -111,11 +126,19 @@ botonAnalisisLexico.addEventListener('click', function () {
                     cadenaIdentificador = cadenaIdentificador.replace(/>$/, "");
                 }
 
-                let validaToken;
+                if (cadenaIdentificador.startsWith('"') || cadenaIdentificador.endsWith('"')) {
+                    if (cadenaIdentificador.startsWith('"') && cadenaIdentificador.endsWith('"')) {
+                        validaString = true;
+                    } else if (!cadenaIdentificador.startsWith('"') && cadenaIdentificador.endsWith('"')) {
+                        validaString = false;
+                    } else if (cadenaIdentificador.startsWith('"') && !cadenaIdentificador.endsWith('"')) {
+                        validaString = false;
+                    }
+                }
 
-                if (declaraInstruccion === "Declaraciones") {
+                if (declaraInstruccion === "Declaraciones" && validaString === undefined) {
                     validaToken = operadores.identificadores.test(cadenaIdentificador);
-                } else if (declaraInstruccion === "salida") {
+                } else if (declaraInstruccion === "salida" && validaString === undefined) {
                     validaToken = operadores.identificadores.test(cadenaIdentificador);
                 }
 
@@ -126,11 +149,16 @@ botonAnalisisLexico.addEventListener('click', function () {
                 if (validaToken === false) {
                     listaErrores.push(`Error en la fila ${fila} | El identificador "${cadenaIdentificador}" no es valido\n`);
                 }
+
+                if (validaString === false) {
+                    listaErrores.push(`Error en la fila ${fila} | La cadena PISTO no es valida\n`);
+                }
             }
             indice++;
         }
-        // Reiniciar el índice para el próximo arreglo interno
+        // Cambia la linea que se esta iterando del código
         fila += 1;
+        // Reiniciar el índice para el próximo arreglo interno
         indice = 0;
         declaraInstruccion = "";
     }
