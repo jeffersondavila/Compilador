@@ -62,19 +62,25 @@ botonAnalisisLexico.addEventListener('click', function () {
 
             // Valida el primer indice, para determinar que tipo de operacion es y si cumple con el formato
             if (indice === 0) {
+                let instruccion;
                 let longitudElemento = elemento.length;
 
                 // Obtiene la posición cuando detecta el signo -
                 let posicionGuion = elemento.indexOf("-") + 1;
+                let siguientePosicionGuion = elemento.indexOf("-", posicionGuion);
 
                 // Obtiene la instrucción principal que se utiliza para inicializar algo en el lenguaje <QC-
                 let subcadena = elemento.substring(0, posicionGuion);
 
-                // Obtiene la posición cuando detecta el signo :
-                let posicionDoblePunto = elemento.indexOf(":");
+                if (!elemento.includes("paso-Fin")) {
+                    // Obtiene la posición cuando detecta el signo :
+                    let posicionDoblePunto = elemento.indexOf(":");
 
-                // Obtiene la instrucción que se esta inicializando
-                let instruccion = elemento.substring(posicionGuion, posicionDoblePunto);
+                    // Obtiene la instrucción que se esta inicializando
+                    instruccion = elemento.substring(posicionGuion, posicionDoblePunto);
+                } else {
+                    instruccion = elemento.substring(posicionGuion, longitudElemento - 1);
+                }
 
                 // Obtiene el : cuando se declara una instrucción
                 let finDeclaracion = elemento.substring(longitudElemento - 1, longitudElemento);
@@ -92,7 +98,7 @@ botonAnalisisLexico.addEventListener('click', function () {
                     declaraInstruccion = instruccion;
                 }
 
-                if (finDeclaracion !== ":") {
+                if (finDeclaracion !== ":" && siguientePosicionGuion === -1) {
                     listaErrores.push(`Error en la fila ${fila} | Después de declarar una instrucción, debe finalizar con ":"\n`);
                 }
             } else if (indice > 0 && indice !== longitud - 1) {
@@ -102,7 +108,7 @@ botonAnalisisLexico.addEventListener('click', function () {
                 if (estado === 1) {
                     if (declaraInstruccion === "paso") {
                         if (!elemento.startsWith('[')) {
-                            listaErrores.push(`Error en la fila ${fila} | La condicion de la sentencia de control no es valida\n`);
+                            listaErrores.push(`Error en la fila ${fila} | La condición de la sentencia de control no es valida\n`);
                         } else {
                             let longitudElemento = elemento.length;
                             let posicionAperturaCondicion = elemento.indexOf("[") + 1;
@@ -165,7 +171,7 @@ botonAnalisisLexico.addEventListener('click', function () {
                     validaToken = operadores.identificadores.test(cadenaIdentificador);
                 } else if (declaraInstruccion === "paso") {
                     if (!cadenaIdentificador.endsWith(']')) {
-                        listaErrores.push(`Error en la fila ${fila} | La condicion de la sentencia de control no es valida\n`);
+                        listaErrores.push(`Error en la fila ${fila} | La condición de la sentencia de control no es valida\n`);
                     } else {
                         let posicionCierraCondicion = cadenaIdentificador.indexOf("]");
                         subcadenaPaso = elemento.substring(0, posicionCierraCondicion);
@@ -198,5 +204,9 @@ botonAnalisisLexico.addEventListener('click', function () {
         declaraInstruccion = "";
     }
 
-    textareaError.value = listaErrores;
+    if (listaErrores.length > 0) {
+        textareaError.value = listaErrores;
+    } else {
+        textareaError.value = "Compilación exitosa, no se detectaron errores";
+    }
 });
