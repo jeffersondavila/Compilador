@@ -27,9 +27,7 @@
 
   <div class="form-floating mt-2 container IngresaCodigo">
     <textarea class="form-control " placeholder="Ingresa tu codigo" id="floatingTextarea1">
-<QC-paso: [variable1 Qmas variable2]>
-  <QC-salida: "Esto es una cadena a imprimir">
-<QC-paso-Fin>
+<QC-Declaraciones: PISTO cadena >> "Esto es una cadena de ejemplo">
     </textarea>
     <label for="floatingTextarea2 me-2">Ingresa tu codigo</label>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end me-2">
@@ -41,7 +39,8 @@
   <div class="form-floating mt-2 container IngresoError">
     <textarea class="form-control" id="floatingTextarea2"></textarea>
     <div class="  d-md-flex justify-content-md-end me-2">
-      <button id="botonAnalisisLexico" class="btn btn-outline-primary mt-3 ms-5 ">Compilar</button>
+      <button id="botonAnalisisLexico" class="btn btn-outline-primary mt-3 ms-5 ">Análisis Lexico</button>
+      <button id="botonAnalisisSintactico" class="btn btn-outline-success mt-3 ms-2 ">Análisis Sintáctico </button>
     </div>
   </div>
 

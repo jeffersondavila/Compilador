@@ -97,50 +97,27 @@ botonAnalisisLexico.addEventListener('click', function () {
                 }
             } else if (indice > 0 && indice !== longitud - 1) {
                 estado += 1;
-                let validaToken, subcadenaPaso;
+                let validaToken;
 
-                if (estado === 1) {
-                    if (declaraInstruccion === "paso") {
-                        if (!elemento.startsWith('[')) {
-                            listaErrores.push(`Error en la fila ${fila} | La condicion de la sentencia de control no es valida\n`);
-                        } else {
-                            let longitudElemento = elemento.length;
-                            let posicionAperturaCondicion = elemento.indexOf("[") + 1;
-                            subcadenaPaso = elemento.substring(posicionAperturaCondicion, longitudElemento);
-                            validaToken = operadores.identificadores.test(subcadenaPaso);
-                        }
-                    } else {
-                        validaToken = operadores.palabrasReservadas.test(elemento);
-                    }
-                } else if (estado === 2) {
-                    if (declaraInstruccion === "paso") {
-                        validaToken = operadores.operadoresComparacion.test(elemento);
-                    } else {
-                        validaToken = operadores.identificadores.test(elemento);
-                    }
+                if (estado === 1) { // Variable
+                    validaToken = operadores.palabrasReservadas.test(elemento);
+                } else if (estado === 2) { // Identificadores
+                    validaToken = operadores.identificadores.test(elemento);
                 } else if (estado === 3) { // Asignación
                     validaToken = operadores.operadoresAritmeticos.test(elemento);
                 }
 
                 if (validaToken === false && estado === 1) {
-                    if (declaraInstruccion === "paso") {
-                        listaErrores.push(`Error en la fila ${fila} | El identificador "${subcadenaPaso}" no es valido\n`);
-                    } else {
-                        listaErrores.push(`Error en la fila ${fila} | La palabra reservada "${elemento}" no es valida\n`);
-                    }
+                    listaErrores.push(`Error en la fila ${fila} | La palabra reservada "${elemento}" no es valida\n`);
                 } else if (validaToken === false && estado === 2) {
-                    if (declaraInstruccion === "paso") {
-                        listaErrores.push(`Error en la fila ${fila} | El operador "${elemento}" no es valido\n`);
-                    } else {
-                        listaErrores.push(`Error en la fila ${fila} | El identificador "${elemento}" no es valido\n`);
-                    }
+                    listaErrores.push(`Error en la fila ${fila} | El identificador "${elemento}" no es valido\n`);
                 } else if (validaToken === false && estado === 3) {
                     listaErrores.push(`Error en la fila ${fila} | El operador "${elemento}" no es valido\n`);
                 }
 
             } else {
                 // Valida el último indice, para determinar que se haya finalizado correctamente la instrucción
-                let validaToken, validaString, subcadenaPaso;
+                let validaToken, validaString;
                 let indiceCierre = elemento.length;
                 let cadenaIdentificador = elemento.substring(0, indiceCierre);
                 let instruccionCierre = elemento.substring(indiceCierre - 1, indiceCierre);
@@ -163,14 +140,6 @@ botonAnalisisLexico.addEventListener('click', function () {
                     validaToken = operadores.identificadores.test(cadenaIdentificador);
                 } else if (declaraInstruccion === "salida" && validaString === undefined) {
                     validaToken = operadores.identificadores.test(cadenaIdentificador);
-                } else if (declaraInstruccion === "paso") {
-                    if (!cadenaIdentificador.endsWith(']')) {
-                        listaErrores.push(`Error en la fila ${fila} | La condicion de la sentencia de control no es valida\n`);
-                    } else {
-                        let posicionCierraCondicion = cadenaIdentificador.indexOf("]");
-                        subcadenaPaso = elemento.substring(0, posicionCierraCondicion);
-                        validaToken = operadores.identificadores.test(subcadenaPaso);
-                    }
                 }
 
                 if (instruccionCierre !== ">") {
@@ -178,11 +147,7 @@ botonAnalisisLexico.addEventListener('click', function () {
                 }
 
                 if (validaToken === false) {
-                    if (declaraInstruccion === "paso") {
-                        listaErrores.push(`Error en la fila ${fila} | El identificador "${subcadenaPaso}" no es valido\n`);
-                    } else {
-                        listaErrores.push(`Error en la fila ${fila} | El identificador "${cadenaIdentificador}" no es valido\n`);
-                    }
+                    listaErrores.push(`Error en la fila ${fila} | El identificador "${cadenaIdentificador}" no es valido\n`);
                 }
 
                 if (validaString === false) {
