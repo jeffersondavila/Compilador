@@ -1,5 +1,1 @@
 <QC-Declaraciones: QUETZAL edad>
-<QC-Declaraciones: PISTO cadena >> "Esto es una cadena de ejemplo">
-
-<QC-salida: edad>
-<QC-salida: "Esto es una cadena a imprimir">

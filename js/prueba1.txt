@@ -1,3 +1,2 @@
-<QC-paso: [variable1 Qmas variable2]>
-    <QC-salida: "Esto es una cadena a imprimir">
-<QC-paso-Fin>
+<QC-salida: edad>
+<QC-salida: "Esto es una cadena a imprimir">
