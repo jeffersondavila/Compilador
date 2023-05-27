@@ -4,7 +4,61 @@ const textareaCodigo = document.getElementById('floatingTextarea1');
 const textareaError = document.getElementById('floatingTextarea2');
 const botonAnalisisLexico = document.getElementById('botonAnalisisLexico');
 
-function validarCodigo(lineas) {
+function PrimerToken(token) {
+    const listaErrores = [];
+    let fila = token[0];
+    let subcadena = token[1];
+    let validaToken = token[2];
+    let finDeclaracion = token[3];
+
+    if (subcadena !== "<QC-") {
+        listaErrores.push(`Error en la fila ${fila + 1} | Para declarar una instrucción se debe inicializar con "<QC-"\n`);
+    }
+
+    if (!validaToken) {
+        listaErrores.push(`Error en la fila ${fila + 1} | La palabra reservada no es válida\n`);
+    }
+
+    if (finDeclaracion !== ":") {
+        listaErrores.push(`Error en la fila ${fila + 1} | Después de declarar una instrucción, debe finalizar con ":"\n`);
+    }
+
+    return listaErrores;
+}
+
+function TokenIntermedio(token) {
+}
+
+function UltimoToken(token) {
+}
+
+function SentenciaDeControl(token) {
+    let validaSentencia;
+    const listaSentenciasDeControl = ["paso", "paso-porque-paso"];
+
+    if (listaSentenciasDeControl.includes(token)) {
+        validaSentencia = true;
+    } else {
+        validaSentencia = false
+    }
+
+    return validaSentencia;
+}
+
+function Ciclos(token) {
+    let validaCiclo;
+    const listaCiclos = ["Repite", "Variar", "Chispudo"];
+
+    if (listaCiclos.includes(token)) {
+        validaCiclo = true;
+    } else {
+        validaCiclo = false
+    }
+
+    return validaCiclo;
+}
+
+function ValidarCodigo(lineas) {
     const listaErrores = [];
     let longitudListaErrores;
 
@@ -28,19 +82,14 @@ function validarCodigo(lineas) {
                 const instruccion = elemento.substring(posicionGuion, posicionDoblePunto);
                 const finDeclaracion = elemento.substring(longitudElemento - 1, longitudElemento);
                 const validaToken = operadores.palabrasReservadas.test(instruccion);
+                // let sentencia = SentenciaDeControl(instruccion);
+                // let ciclo = Ciclos(instruccion);
+                let contenido = [fila, subcadena, validaToken, finDeclaracion];
+                let resultado = PrimerToken(contenido);
+                let longitudResultado = resultado.length;
 
-                if (subcadena !== "<QC-") {
-                    listaErrores.push(`Error en la fila ${fila + 1} | Para declarar una instrucción se debe inicializar con "<QC-"\n`);
-                }
-
-                if (!validaToken) {
-                    listaErrores.push(`Error en la fila ${fila + 1} | La palabra reservada no es válida\n`);
-                } else {
-                    declaraInstruccion = instruccion;
-                }
-
-                if (finDeclaracion !== ":") {
-                    listaErrores.push(`Error en la fila ${fila + 1} | Después de declarar una instrucción, debe finalizar con ":"\n`);
+                if (longitudResultado > 0) {
+                    listaErrores.push(resultado);
                 }
             } else if (indice !== arregloInterior.length - 1) {
                 estado++;
@@ -106,7 +155,7 @@ function validarCodigo(lineas) {
 
     longitudListaErrores = listaErrores.length;
 
-    if (longitudListaErrores === 0){
+    if (longitudListaErrores === 0) {
         listaErrores.push(`Compilación Exitosa UwU\n`);
     }
 
@@ -157,7 +206,7 @@ botonAnalisisLexico.addEventListener('click', function () {
         return;
     }
 
-    var resultadoAnalisis = validarCodigo(palabrasPorLinea);
+    var resultadoAnalisis = ValidarCodigo(palabrasPorLinea);
 
     textareaError.value = resultadoAnalisis;
 });
