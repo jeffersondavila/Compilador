@@ -68,11 +68,29 @@ function SentenciaDeControl(token) {
 
 function Ciclos(token) {
     let validaCiclo = 0;
-    const lista = [/Repite/g, /Variar/g, /Chispudo/g];
+    const lista1 = [/Repite/g];
+    const lista2 = [/Variar/g];
+    const lista3 = [/Chispudo/g];
 
-    for (const list of lista) {
+    for (const list of lista1) {
         if (list.test(token)) {
-            validaCiclo = 2;
+            validaCiclo = 1;
+        }
+    }
+
+    if (validaCiclo === 0) {
+        for (const list of lista2) {
+            if (list.test(token)) {
+                validaCiclo = 2;
+            }
+        }
+    }
+
+    if (validaCiclo === 0) {
+        for (const list of lista3) {
+            if (list.test(token)) {
+                validaCiclo = 3;
+            }
         }
     }
     return validaCiclo;
@@ -96,7 +114,7 @@ function ValidarCodigo(lineas) {
             }
 
             if (indice === 0) {
-                let instruccion;
+                let instruccion, validaToken;
                 const longitudElemento = elemento.length;
                 const posicionGuion = elemento.indexOf("-") + 1;
                 const subcadena = elemento.substring(0, posicionGuion);
@@ -119,7 +137,6 @@ function ValidarCodigo(lineas) {
                 }
 
                 const finDeclaracion = elemento.substring(longitudElemento - 1, longitudElemento);
-                let validaToken;
                 validaToken = operadores.palabrasReservadas.test(instruccion);
 
                 if (sentencia === 12) {
