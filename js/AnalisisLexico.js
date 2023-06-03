@@ -33,28 +33,27 @@ function UltimoToken(token) {
 }
 
 function SentenciaDeControl(token) {
-    let validaSentencia;
-    const listaSentenciasDeControl = ["paso", "paso-porque-paso"];
+    let validaSentencia = 0;
+    const listaSentenciasDeControl = [/paso/g, /paso-porque-paso/g, /paso-Fin/g];
 
-    if (listaSentenciasDeControl.includes(token)) {
-        validaSentencia = true;
-    } else {
-        validaSentencia = false
+    for (const lista of listaSentenciasDeControl) {
+        if (lista.test(token)) {
+            validaSentencia = 1;
+        }
     }
-
     return validaSentencia;
 }
 
+
 function Ciclos(token) {
-    let validaCiclo;
-    const listaCiclos = ["Repite", "Variar", "Chispudo"];
+    let validaCiclo = 0;
+    const lista = [/Repite/g, /Variar/g, /Chispudo/g];
 
-    if (listaCiclos.includes(token)) {
-        validaCiclo = true;
-    } else {
-        validaCiclo = false
+    for (const list of lista) {
+        if (list.test(token)) {
+            validaCiclo = 2;
+        }
     }
-
     return validaCiclo;
 }
 
@@ -82,8 +81,6 @@ function ValidarCodigo(lineas) {
                 const instruccion = elemento.substring(posicionGuion, posicionDoblePunto);
                 const finDeclaracion = elemento.substring(longitudElemento - 1, longitudElemento);
                 const validaToken = operadores.palabrasReservadas.test(instruccion);
-                // let sentencia = SentenciaDeControl(instruccion);
-                // let ciclo = Ciclos(instruccion);
                 let contenido = [fila, subcadena, validaToken, finDeclaracion];
                 let resultado = PrimerToken(contenido);
                 let longitudResultado = resultado.length;
