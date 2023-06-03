@@ -119,7 +119,15 @@ function ValidarCodigo(lineas) {
                 }
 
                 const finDeclaracion = elemento.substring(longitudElemento - 1, longitudElemento);
-                const validaToken = operadores.palabrasReservadas.test(instruccion);
+                let validaToken;
+                validaToken = operadores.palabrasReservadas.test(instruccion);
+
+                if (sentencia === 12) {
+                    if (elemento === "<QC-paso-porque-paso> <QC-paso:" || elemento === "<QC-paso-porque-paso><QC-paso:") {
+                        validaToken = true;
+                    }
+                }
+
                 let contenido = [fila, subcadena, validaToken, finDeclaracion, sentencia];
 
                 let resultado = PrimerToken(contenido);

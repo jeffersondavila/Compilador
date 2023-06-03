@@ -27,10 +27,14 @@
   <div class="form-floating mt-2 container IngresaCodigo">
     <textarea class="form-control " placeholder="Ingresa tu codigo" id="floatingTextarea1">
 
-<QC-paso: [variable1 Qmas variable2]>
-  <QC-salida: "imprimiendo cadena 1">
+<QC-paso: [variable1 Q< variable2]>
+    <QC-salida: "imprimiendo cadena 1">
+<QC-paso-porque-paso> <QC-paso: [variable1 Q> variable2]>
+    <QC-salida: "imprimiendo cadena 2">
+<QC-paso-porque-paso><QC-paso: [variable1 Q>> variable2]>
+    <QC-salida: "imprimiendo cadena 3">
 <QC-paso-porque-paso>
-  <QC-salida: "imprimiendo cadena2">
+    <QC-salida: "imprimiendo cadena 4">
 <QC-paso-Fin>
 
     </textarea>
